@@ -1,2 +1,2 @@
 # Goats
-CS 227B Player
+CS 227B Kickass Player
