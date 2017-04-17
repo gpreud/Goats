@@ -10,39 +10,9 @@ import org.ggp.base.util.statemachine.exceptions.GoalDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 
-import com.google.common.collect.Lists;
+public class GoatsCompulsive extends the_men_who_stare_at_goats {
 
-public class GoatsMinimax extends the_men_who_stare_at_goats {
-
-	protected int minscore(Role role, Move move, MachineState state, StateMachine machine)
-			throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException {
-		if(machine.isTerminal(state)) {
-			return machine.getGoal(state, role);
-		}
-		List<Role> roles = machine.getRoles();
-		Role opp = roles.get(0);
-		if (opp.equals(role)) {
-			opp = roles.get(1);
-		}
-		List<Move> moves = machine.getLegalMoves(state, opp);
-		int score = 100;
-		for(int i = 0; i < moves.size(); i++) {
-			List<Move> list = new ArrayList<Move>();
-			list.add(moves.get(i));
-			list.add(move);
-			if (roles.get(0).equals(role)) {
-				list = Lists.reverse(list);
-			}
-			int result = maxscore(role, machine.getNextState(state, list), machine);
-
-			if(result < score) {
-				score = result;
-			}
-		}
-		return score;
-	}
-
-	protected int maxscore(Role role, MachineState state, StateMachine machine)
+	private int maxscore(Role role, MachineState state, StateMachine machine)
 			throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException {
 		if(machine.isTerminal(state)) {
 			return machine.getGoal(state, role);
@@ -51,9 +21,13 @@ public class GoatsMinimax extends the_men_who_stare_at_goats {
 		List<Move> moves = machine.getLegalMoves(state, role);
 		int score = 0;
 		for(int i = 0; i < moves.size(); i++) {
-			int result = minscore(role, moves.get(i), state, machine);
+			List<Move> list = new ArrayList<Move>();
+			list.add(moves.get(i));
+			int result = maxscore(role, machine.getNextState(state, list), machine);
 
-			if(result > score) {
+			if(result == 100) {
+				return 100;
+			} else if(result > score) {
 				score = result;
 			}
 		}
@@ -70,20 +44,24 @@ public class GoatsMinimax extends the_men_who_stare_at_goats {
 		for(int i = 0; i < moves.size(); i++) {
 			List<Move> list = new ArrayList<Move>();
 			list.add(moves.get(i));
-			int result = minscore(role, moves.get(i), state, machine);
+			int result = maxscore(role, machine.getNextState(state, list), machine);
 
-			if(result > score) {
+			if(result == 100) {
+				return moves.get(i);
+			} else if(result > score) {
 				score = result;
 				action = moves.get(i);
 			}
 		}
+
+
 		return action;
 	}
 
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "minimax Player";
+		return "compulsive Player";
 	}
 
 }

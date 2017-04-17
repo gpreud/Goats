@@ -2,7 +2,6 @@ package org.ggp.base.player.gamer.statemachine;
 
 
 import java.util.List;
-import java.util.Random;
 
 import org.ggp.base.apps.player.Player;
 import org.ggp.base.player.gamer.exception.GamePreviewException;
@@ -34,64 +33,14 @@ public class the_men_who_stare_at_goats extends StateMachineGamer {
 
 	}
 
-<<<<<<< HEAD:ggp-base-master/src/main/java/org/ggp/base/player/gamer/statemachine/the_men_who_stare_at_goats.java
-	private int maxscore(Role role, MachineState state, StateMachine machine)
-			throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException {
-		if(machine.isTerminal(state)) {
-			return machine.getGoal(state, role);
-		}
-
-		List<Move> moves = machine.getLegalMoves(state, role);
-		int score = 0;
-		for(int i = 0; i < moves.size(); i++) {
-			List<Move> list = new ArrayList<Move>();
-			list.add(moves.get(i));
-			int result = maxscore(role, machine.getNextState(state, list), machine);
-
-			if(result == 100) {
-				return 100;
-			} else if(result > score) {
-				score = result;
-			}
-		}
-		return score;
-	}
-
-	protected Move bestmove(Role role, StateMachine machine)
-			throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException {
-		MachineState state = getCurrentState();
-		List<Move> moves = machine.getLegalMoves(state, role);
-		Move action = moves.get(0);
-		int score = 0;
-		for(int i = 0; i < moves.size(); i++) {
-			List<Move> list = new ArrayList<Move>();
-			list.add(moves.get(i));
-			int result = maxscore(role, machine.getNextState(state, list), machine);
-
-			if(result == 100) {
-				return moves.get(i);
-			} else if(result > score) {
-				score = result;
-				action = moves.get(i);
-			}
-		}
-
-
-		return action;
-	}
-
-=======
->>>>>>> parent of a15e754... Compulsive done:ggp-base-master/src/main/java/the_men_who_stare_at_goats.java
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException,
 			GoalDefinitionException {
 		StateMachine machine = getStateMachine();
-		MachineState state = getCurrentState();
+
 		Role role = getRole();
-		List<Move> moves = machine.getLegalMoves(state, role);
-		Random rn = new Random();
-		return moves.get(rn.nextInt(moves.size()));
+		return bestmove(role, machine);
 
 	}
 
@@ -117,6 +66,14 @@ public class the_men_who_stare_at_goats extends StateMachineGamer {
 	public String getName() {
 		// TODO Auto-generated method stub
 		return "the_men_who_stare_at_goats Player";
+	}
+
+	protected Move bestmove(Role role, StateMachine machine)
+			throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException {
+		// TODO Auto-generated method stub
+		MachineState state = getCurrentState();
+		List<Move> moves = machine.getLegalMoves(state, role);
+		return moves.get(0);
 	}
 
 }
