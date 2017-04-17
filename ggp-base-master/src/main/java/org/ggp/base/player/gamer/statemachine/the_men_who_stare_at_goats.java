@@ -1,8 +1,8 @@
 package org.ggp.base.player.gamer.statemachine;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.ggp.base.apps.player.Player;
 import org.ggp.base.player.gamer.exception.GamePreviewException;
@@ -34,6 +34,7 @@ public class the_men_who_stare_at_goats extends StateMachineGamer {
 
 	}
 
+<<<<<<< HEAD:ggp-base-master/src/main/java/org/ggp/base/player/gamer/statemachine/the_men_who_stare_at_goats.java
 	private int maxscore(Role role, MachineState state, StateMachine machine)
 			throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException {
 		if(machine.isTerminal(state)) {
@@ -79,14 +80,18 @@ public class the_men_who_stare_at_goats extends StateMachineGamer {
 		return action;
 	}
 
+=======
+>>>>>>> parent of a15e754... Compulsive done:ggp-base-master/src/main/java/the_men_who_stare_at_goats.java
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException,
 			GoalDefinitionException {
 		StateMachine machine = getStateMachine();
+		MachineState state = getCurrentState();
 		Role role = getRole();
-
-		return bestmove(role, machine);
+		List<Move> moves = machine.getLegalMoves(state, role);
+		Random rn = new Random();
+		return moves.get(rn.nextInt(moves.size()));
 
 	}
 
