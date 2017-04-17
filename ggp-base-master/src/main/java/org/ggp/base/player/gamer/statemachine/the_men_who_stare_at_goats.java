@@ -1,3 +1,4 @@
+package org.ggp.base.player.gamer.statemachine;
 
 
 import java.util.ArrayList;
@@ -5,7 +6,6 @@ import java.util.List;
 
 import org.ggp.base.apps.player.Player;
 import org.ggp.base.player.gamer.exception.GamePreviewException;
-import org.ggp.base.player.gamer.statemachine.StateMachineGamer;
 import org.ggp.base.util.game.Game;
 import org.ggp.base.util.statemachine.MachineState;
 import org.ggp.base.util.statemachine.Move;
@@ -19,7 +19,8 @@ import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
 
 
 public class the_men_who_stare_at_goats extends StateMachineGamer {
-	Player p;
+	protected Player p;
+
 	@Override
 	public StateMachine getInitialStateMachine() {
 		return new CachedStateMachine(new ProverStateMachine());
@@ -55,7 +56,7 @@ public class the_men_who_stare_at_goats extends StateMachineGamer {
 		return score;
 	}
 
-	private Move bestmove(Role role, StateMachine machine)
+	protected Move bestmove(Role role, StateMachine machine)
 			throws MoveDefinitionException, TransitionDefinitionException, GoalDefinitionException {
 		MachineState state = getCurrentState();
 		List<Move> moves = machine.getLegalMoves(state, role);
